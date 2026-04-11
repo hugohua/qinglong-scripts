@@ -1,0 +1,14 @@
+{
+  "name": "qinlong",
+  "version": "1.0.0",
+  "private": true,
+  "description": "520switch QingLong sign-in script",
+  "main": "520switch-signin.js",
+  "scripts": {
+    "start": "node 520switch-signin.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
