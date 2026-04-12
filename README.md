@@ -1,33 +1,90 @@
-# 520switch Sign-In Script
+# qinlong 脚本仓库
 
-## Requirements
+这个仓库用于存放可在本地或 QingLong 中运行的自动化脚本。
 
-- Node.js 18+
+## 脚本清单
 
-## Local Usage
+### 1. `520switch-signin.js`
 
-1. Copy `.env.example` to `.env`
-2. Fill `COOKIE=...`
-3. Run `npm start`
+用途：自动执行 `www.520switch.com` 的每日签到。
 
-## QingLong Usage
+运行逻辑：
 
-1. Upload `520switch-signin.js` to QingLong's scripts directory
-2. Create an environment variable named `COOKIE`
-3. Create a task such as:
+1. 优先读取环境变量 `SWITCH520_COOKIE`
+2. 如果环境变量中没有 `SWITCH520_COOKIE`，则尝试读取本地 `.env`
+3. 请求站点首页，提取当前页面里的 `zb.ajax_nonce`
+4. 调用签到接口完成签到
+
+返回规则：
+
+- 签到成功：输出站点返回消息，退出码为 `0`
+- 今天已经签到：输出站点返回消息，退出码为 `0`
+- 配置缺失、Cookie 失效、页面结构变化或请求失败：输出错误信息，退出码为 `1`
+
+## 使用说明
+
+### 环境要求
+
+- Node.js 18 或更高版本
+
+### 本地运行
+
+1. 复制配置模板：
+
+```bash
+cp .env.example .env
+```
+
+2. 编辑 `.env`，填入浏览器登录后的 Cookie：
+
+```dotenv
+SWITCH520_COOKIE=这里替换成你的完整Cookie
+```
+
+3. 执行脚本：
+
+```bash
+node 520switch-signin.js
+```
+
+或者：
+
+```bash
+npm start
+```
+
+### QingLong 运行
+
+1. 将脚本上传到 QingLong 脚本目录
+2. 在 QingLong 环境变量中新增：
+
+```bash
+SWITCH520_COOKIE=这里替换成你的完整Cookie
+```
+
+3. 新建任务，命令可以使用：
 
 ```bash
 task /ql/data/scripts/520switch-signin.js
 ```
 
-or:
+如果你的 QingLong 环境没有给 `.js` 文件配置 `task` 直接执行，也可以用：
 
 ```bash
 node /ql/data/scripts/520switch-signin.js
 ```
 
-## Behavior
+## 开发与测试
 
-- Success: prints the success message and exits `0`
-- Already signed: prints the site message and exits `0`
-- Failure: prints an error and exits `1`
+运行测试：
+
+```bash
+npm test
+```
+
+当前测试覆盖：
+
+- 页面中提取 `ajax_nonce`
+- 成功签到结果判定
+- 已签到结果判定
+- 异常返回处理

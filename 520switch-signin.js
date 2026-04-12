@@ -39,8 +39,8 @@ function parseDotEnv(text) {
 }
 
 function loadCookie() {
-  if (process.env.COOKIE && process.env.COOKIE.trim()) {
-    return process.env.COOKIE.trim();
+  if (process.env.SWITCH520_COOKIE && process.env.SWITCH520_COOKIE.trim()) {
+    return process.env.SWITCH520_COOKIE.trim();
   }
 
   const candidates = [
@@ -54,12 +54,12 @@ function loadCookie() {
     }
 
     const env = parseDotEnv(fs.readFileSync(filePath, 'utf8'));
-    if (env.COOKIE && env.COOKIE.trim()) {
-      return env.COOKIE.trim();
+    if (env.SWITCH520_COOKIE && env.SWITCH520_COOKIE.trim()) {
+      return env.SWITCH520_COOKIE.trim();
     }
   }
 
-  throw new Error('Missing COOKIE. Set process.env.COOKIE or add it to .env');
+  throw new Error('Missing SWITCH520_COOKIE. Set process.env.SWITCH520_COOKIE or add it to .env');
 }
 
 function extractAjaxNonce(html) {
