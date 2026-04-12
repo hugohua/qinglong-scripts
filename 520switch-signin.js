@@ -104,6 +104,46 @@ function classifySignResult(payload) {
   throw new Error(message);
 }
 
+function buildNotification(resultOrError) {
+  if (resultOrError instanceof Error) {
+    return {
+      title: '520switch 签到失败',
+      content: resultOrError.message,
+    };
+  }
+
+  if (resultOrError?.ok && resultOrError.alreadySigned) {
+    return {
+      title: '520switch 今日已签到',
+      content: resultOrError.message,
+    };
+  }
+
+  if (resultOrError?.ok) {
+    return {
+      title: '520switch 签到成功',
+      content: resultOrError.message,
+    };
+  }
+
+  return {
+    title: '520switch 签到失败',
+    content: String(resultOrError?.message ?? 'Unknown response'),
+  };
+}
+
+async function notifyQingLong(payload, api = globalThis.QLAPI) {
+  if (!api || typeof api.systemNotify !== 'function') {
+    return undefined;
+  }
+
+  try {
+    return await api.systemNotify(payload);
+  } catch {
+    return undefined;
+  }
+}
+
 async function fetchNonce(cookie) {
   const response = await fetch(HOME_URL, {
     headers: {
@@ -158,13 +198,23 @@ async function main() {
   const nonce = await fetchNonce(cookie);
   const result = await signIn(cookie, nonce);
   console.log(result.message);
+  await notifyQingLong(buildNotification(result));
+  return result;
+}
+
+async function runCli() {
+  try {
+    await main();
+  } catch (error) {
+    const normalizedError = error instanceof Error ? error : new Error(String(error));
+    console.error(normalizedError.message);
+    await notifyQingLong(buildNotification(normalizedError));
+    process.exitCode = 1;
+  }
 }
 
 if (require.main === module) {
-  main().catch((error) => {
-    console.error(error.message);
-    process.exitCode = 1;
-  });
+  runCli();
 }
 
 module.exports = {
@@ -172,7 +222,10 @@ module.exports = {
   loadCookie,
   extractAjaxNonce,
   classifySignResult,
+  buildNotification,
+  notifyQingLong,
   fetchNonce,
   signIn,
   main,
+  runCli,
 };

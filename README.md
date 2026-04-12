@@ -20,6 +20,7 @@
 - 签到成功：输出站点返回消息，退出码为 `0`
 - 今天已经签到：输出站点返回消息，退出码为 `0`
 - 配置缺失、Cookie 失效、页面结构变化或请求失败：输出错误信息，退出码为 `1`
+- 在 QingLong 中如果可用 `QLAPI.systemNotify`，会对“签到成功 / 今日已签到 / 执行失败”三种结果发送系统通知
 
 ## 使用说明
 
@@ -73,6 +74,14 @@ task /ql/data/scripts/520switch-signin.js
 ```bash
 node /ql/data/scripts/520switch-signin.js
 ```
+
+脚本在 QingLong 中运行时，会调用内置 `QLAPI.systemNotify` 发送通知：
+
+- 标题：`520switch 签到成功`
+- 标题：`520switch 今日已签到`
+- 标题：`520switch 签到失败`
+
+通知内容使用脚本实际运行返回的消息或错误信息。
 
 ## 开发与测试
 
