@@ -2,13 +2,9 @@
   "name": "qinlong",
   "version": "1.0.0",
   "private": true,
-  "description": "520switch QingLong sign-in script",
-  "main": "520switch-signin.js",
+  "description": "520switch QingLong Python sign-in script",
   "scripts": {
-    "start": "node 520switch-signin.js",
-    "test": "node --test"
-  },
-  "engines": {
-    "node": ">=18"
+    "start": "python3 520switch-signin.py",
+    "test": "python3 -m unittest tests/test_520switch_signin_py.py"
   }
 }

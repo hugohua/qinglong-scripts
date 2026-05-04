@@ -27,8 +27,25 @@ Relevant point for this repository:
 
 Current project usage:
 
-- `520switch-signin.js` uses `QLAPI.systemNotify` if it exists.
+- `520switch-signin.py` uses `QLAPI.systemNotify` if it exists.
 - If `QLAPI` is missing, the script should continue without treating that as a failure.
+
+### Environment Variable Updates
+
+Source:
+
+- `../qinglong-site/docs/zh/guide/user-guide/built-in-api.mdx`
+
+Relevant points for this repository:
+
+- `QLAPI.getEnvs({ searchValue })` returns QingLong environment variables matching a name or search value.
+- `QLAPI.updateEnv({ env })` updates an existing environment variable.
+- `QLAPI.createEnv({ envs })` creates new environment variables.
+
+Current project usage:
+
+- `520switch-signin.py` updates or creates `SWITCH520_COOKIE` after a successful captcha login.
+- The script uses only the narrow `getEnvs` / `updateEnv` / `createEnv` subset and should continue when `QLAPI` is unavailable, such as during local runs.
 
 ### Open Platform API
 
