@@ -2,9 +2,9 @@
   "name": "qinlong",
   "version": "1.0.0",
   "private": true,
-  "description": "520switch QingLong Python sign-in script",
+  "description": "QingLong-compatible Python automation scripts",
   "scripts": {
     "start": "python3 520switch-signin.py",
-    "test": "python3 -m unittest tests/test_520switch_signin_py.py"
+    "test": "python3 -m unittest discover tests"
   }
 }

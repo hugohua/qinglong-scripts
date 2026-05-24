@@ -28,6 +28,7 @@ Relevant point for this repository:
 Current project usage:
 
 - `520switch-signin.py` uses `QLAPI.systemNotify` if it exists.
+- `ipzan-receive-coins.py` uses `QLAPI.systemNotify` if it exists.
 - If `QLAPI` is missing, the script should continue without treating that as a failure.
 
 ### Environment Variable Updates
@@ -71,4 +72,4 @@ Preferred order:
 2. Extract a small shared adapter only if multiple scripts need the same QingLong method.
 3. Build a larger mock layer only when several methods are used and duplicated test setup becomes expensive.
 
-For the current repository, a minimal fake object with `systemNotify()` is sufficient.
+For notification-only scripts, a minimal fake object with `systemNotify()` is sufficient.
